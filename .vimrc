@@ -21,6 +21,7 @@ nnoremap S :exec "normal a".nr2char(getchar())."\e"<CR>
 
 autocmd FileType c,cpp :set sw=8 cindent smarttab
 autocmd FileType sh setlocal ts=4 sw=4 sts=0
+autocmd FileType python setlocal ts=4 sw=4 sts=0 expandtab
 "bands jj to <ESC>, see https://vi.stackexchange.com/a/301/20051
 inoremap jj <ESC>
 "this auto ident when pasting
