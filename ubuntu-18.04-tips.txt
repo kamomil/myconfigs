@@ -105,3 +105,30 @@ Terminal=false
 Type=Application
 X-GNOME-Autostart-enabled=true
 ```
+
+listing available dictionaries in aspell:
+```
+aspell dump dicts
+```
+installing german dict:
+```
+sudo apt install aspell-de
+```
+commands:
+=========
+dump list of typos in a file:
+```
+cat german-text.txt | aspell -l de_DE list
+```
+dump list of typos in a file together with a list of possible correction to each typo:
+```
+cat german-text.txt | aspell -l de_DE list | aspell -l de_DE -a
+```
+Don't use ispell!, it's not so good and comftarble.
+If you do want to use it , download a german dictionary from here: https://www.j3e.de/ispell/igerman98/dict/
+then extract it with:
+```
+bzip2 -kd igerman98-20161207.tar.bz2
+tar -xf igerman98-20161207.tar
+```
+follow the instruction in the file INSTALL.ispell in the extracted directory for how to compile and install
