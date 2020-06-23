@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ $3 -ne 1 ]; then
+	exit 0
+fi
+
+branch=`git reflog | awk 'NR==1{ print $8; exit }'`
+
+
+if [[ "$branch" == *"rkisp1"* ]]; then
+  printf -v date '%(%Y-%m-%d %H:%M)T\n' -1
+  if grep -Fxq "$date +0100: start" ~/.gtimelog/timelog.txt
+    then
+      echo "ok"
+    else
+	  echo "" >> ~/.gtimelog/timelog.txt
+	  echo "#" `date +%A` >> ~/.gtimelog/timelog.txt
+	  echo $date "+0100: start" >> ~/.gtimelog/timelog.txt
+  fi
+  echo $date +0100: "r&d:" "col0021-core-r&d:" agile: at06-work-on-backlog-item-id-unbillable: $branch >> ~/.gtimelog/timelog.txt
+  echo $date +0100: "r&d:" "col0021-core-r&d:" agile: at06-work-on-backlog-item-id-unbillable: $branch
+fi
+
