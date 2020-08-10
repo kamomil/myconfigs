@@ -127,6 +127,10 @@ dump list of typos in a file together with a list of possible correction to each
 ```
 cat german-text.txt | aspell -l de_DE list | aspell -l de_DE -a
 ```
+Note that the simple `spell` command can't recognize umlauts. So to run english spell and then german spell do:
+```
+cat myfile.txt | aspell -l en_US -d en  list  | aspell -l de_DE  list | sort | uniq
+```
 Don't use `ispell`, it's not so good and not comfortable.
 If you do want to use it , download a german dictionary from here: https://www.j3e.de/ispell/igerman98/dict/
 then extract it with:
