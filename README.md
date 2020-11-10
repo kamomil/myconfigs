@@ -139,3 +139,19 @@ bzip2 -kd igerman98-20161207.tar.bz2
 tar -xf igerman98-20161207.tar
 ```
 follow the instruction in the file INSTALL.ispell in the extracted directory for how to compile and install
+
+Installing RIOT irc
+===================
+From the site: https://element.io/get-started
+
+```
+sudo apt install -y wget apt-transport-https
+
+sudo wget -O /usr/share/keyrings/riot-im-archive-keyring.gpg https://packages.riot.im/debian/riot-im-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/riot-im-archive-keyring.gpg] https://packages.riot.im/debian/ default main" | sudo tee /etc/apt/sources.list.d/riot-im.list
+
+sudo apt update
+
+sudo apt install element-desktop
+```
