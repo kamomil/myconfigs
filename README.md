@@ -155,3 +155,56 @@ sudo apt update
 
 sudo apt install element-desktop
 ```
+
+Sieve filters
+=============
+```
+sieve-connect --noclearauth -s mail.collabora.co.uk -u dafna
+> h
+> list
+"kernel-mailing-lists.filter"
+"spam.filter"
+"my-filters.filter" ACTIVE
+> download my-filters.filter my-filters.filter
+> quit
+```
+here are the filters for some of my mailing lists:
+```
+# vger.kernel.org mailing lists
+if header :matches "List-Id" "*<*.vger.kernel.org>" {
+  fileinto :create "kernel.${2}";
+}
+
+# infradead mailing lists
+if header :matches "List-Id" "*<*.lists.infradead.org>" {
+	fileinto :create "kernel.${2}";
+}
+
+# dri-devel
+if header :matches "List-Id" "*<dri-devel.lists.freedesktop.org>" {
+  fileinto :create "kernel.dri-devel";
+}
+
+# libcamera-devel
+if header :matches "List-Id" "*<libcamera-devel.lists.libcamera.org>" {
+  fileinto :create "libcamera";
+}
+
+# alsa mailing lists
+if header :matches "List-Id" "*<alsa-devel.alsa-project.org>" {
+	fileinto :create "kernel.alsa";
+}
+
+# cros dev mailing lists
+if header :matches "List-Id" "*<chromium-os-dev.chromium.org>" {
+	fileinto :create "cros-dev";
+}
+```
+After updating the sieve filters in the server, I should enalbe the new created
+folder in thunderbird:
+(Edit->Preferences->Advanced->Config Editor) and set the key mail.server.default.check_all_folders_for_new to TRUE.
+One more thing to NOTE, the new folders are automatically created by the sieve filter,
+but thunderbird does not automatically subscribes me to those folders. This is kind of stupid actually
+but when noting that no emails are received from a mailing list, I should right click my account and choose
+subscribe, there there is a list of the new created folders and I should subscribe to them.
+
