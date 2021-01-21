@@ -203,8 +203,15 @@ if header :matches "List-Id" "*<chromium-os-dev.chromium.org>" {
 After updating the sieve filters in the server, I should enalbe the new created
 folder in thunderbird:
 (Edit->Preferences->Advanced->Config Editor) and set the key mail.server.default.check_all_folders_for_new to TRUE.
+
 One more thing to NOTE, the new folders are automatically created by the sieve filter,
 but thunderbird does not automatically subscribes me to those folders. This is kind of stupid actually
 but when noting that no emails are received from a mailing list, I should right click my account and choose
 subscribe, there there is a list of the new created folders and I should subscribe to them.
+
+when uploading a script it will show me if I have syntaz errors.
+
+To get the full email with headers in thunderbird: ctrl+u
+To mark selected messages as read: m
+
 
