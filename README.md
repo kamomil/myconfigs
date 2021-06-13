@@ -200,7 +200,7 @@ if header :matches "List-Id" "*<chromium-os-dev.chromium.org>" {
 	fileinto :create "cros-dev";
 }
 ```
-After updating the sieve filters in the server, I should enalbe the new created
+After updating the sieve filters in the server, I should enable the new created
 folder in thunderbird:
 (Edit->Preferences->Advanced->Config Editor) and set the key mail.server.default.check_all_folders_for_new to TRUE.
 
@@ -209,9 +209,135 @@ but thunderbird does not automatically subscribes me to those folders. This is k
 but when noting that no emails are received from a mailing list, I should right click my account and choose
 subscribe, there there is a list of the new created folders and I should subscribe to them.
 
-when uploading a script it will show me if I have syntaz errors.
+when uploading a script it will show me if I have syntax errors.
 
 To get the full email with headers in thunderbird: ctrl+u
 To mark selected messages as read: m
 
+```
+sieve-connect --noclearauth -s mail.collabora.co.uk -u <your collabora user name>
+```
 
+VIM
+===
+* First, there is the `rg` command (ripgrep) that should be nicer and faster than `git grep`
+* I use ctags with vim
+* For grepping withing vim, I use the plugin `grep.vim`: https://www.vim.org/scripts/script.php?script_id=311
+Usage example:
+```
+:Rg height ~/git/media_tree
+```
+* Then to navigate between the windows, it is CTRL+w and then the j,k keys. To go to previous place: CTRL+o, and forthplace CTRL+i
+* To show tab numbers, I copy-past this https://stackoverflow.com/a/33765365/1019140 to .vimrc
+* to ident a peace of code: select the code and press '='
+
+My current `.vimrc`:
+```
+let g:ctags_statusline=1
+let generate_tags=1
+let g:ctags_title=1
+set autochdir
+set csre
+set tags=tags;
+set noswapfile
+set title
+"set relativenumber
+"set number
+" '+' is the clipboard register - this is a shortcut to paste from clipboard
+"and move the cursoe to after the pasted text
+"nnoremap cv "+gP
+"nnoremap cb "*gP
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /^\t* \+\|\s\+$/
+set hlsearch
+"see http://vim.wikia.com/wiki/Insert_a_single_character
+"nnoremap s :exec "normal i".nr2char(getchar())."\e"<CR>
+"nnoremap S :exec "normal a".nr2char(getchar())."\e"<CR>
+
+"nnoremap C :exec "normal a".\/\/."\e"<CR>
+
+
+autocmd FileType c,cpp :set sw=8 cindent smarttab
+autocmd FileType sh setlocal ts=4 sw=4 sts=0
+autocmd FileType python setlocal ts=4 sw=4 sts=0 expandtab
+"bands jj to <ESC>, see https://vi.stackexchange.com/a/301/20051
+inoremap jj <ESC>
+"this auto ident when pasting
+"nnoremap p p=`]
+"nnoremap P P=`]
+"set autoindent
+"set cindent
+
+nnoremap <C-c> y: call system("xclip -i -selection clipboard", getreg("\""))<CR>
+"set clipboard=unnamedplus
+syntax on
+
+
+set showtabline=2 " always show tabs
+
+" from https://stackoverflow.com/a/33765365/1019140
+set tabline=%!MyTabLine()  " custom tab pages line
+function! MyTabLine()
+  let s = ''
+  " loop through each tab page
+  for i in range(tabpagenr('$'))
+    if i + 1 == tabpagenr()
+      let s .= '%#TabLineSel#'
+    else
+      let s .= '%#TabLine#'
+    endif
+    if i + 1 == tabpagenr()
+      let s .= '%#TabLineSel#' " WildMenu
+    else
+      let s .= '%#Title#'
+    endif
+    " set the tab page number (for mouse clicks)
+    let s .= '%' . (i + 1) . 'T '
+    " set page number string
+    let s .= i + 1 . ''
+    " get buffer names and statuses
+    let n = ''  " temp str for buf names
+    let m = 0   " &modified counter
+    let buflist = tabpagebuflist(i + 1)
+    " loop through each buffer in a tab
+    for b in buflist
+      if getbufvar(b, "&buftype") == 'help'
+        " let n .= '[H]' . fnamemodify(bufname(b), ':t:s/.txt$//')
+      elseif getbufvar(b, "&buftype") == 'quickfix'
+        " let n .= '[Q]'
+      elseif getbufvar(b, "&modifiable")
+        let n .= fnamemodify(bufname(b), ':t') . ', ' " pathshorten(bufname(b))
+      endif
+      if getbufvar(b, "&modified")
+        let m += 1
+      endif
+    endfor
+    " let n .= fnamemodify(bufname(buflist[tabpagewinnr(i + 1) - 1]), ':t')
+    let n = substitute(n, ', $', '', '')
+    " add modified label
+    if m > 0
+      let s .= '+'
+      " let s .= '[' . m . '+]'
+    endif
+    if i + 1 == tabpagenr()
+      let s .= ' %#TabLineSel#'
+    else
+      let s .= ' %#TabLine#'
+    endif
+    " add buffer names
+    if n == ''
+      let s.= '[New]'
+    else
+      let s .= n
+    endif
+    " switch to no underlining and add final space
+    let s .= ' '
+  endfor
+  let s .= '%#TabLineFill#%T'
+  " right-aligned close button
+  " if tabpagenr('$') > 1
+  "   let s .= '%=%#TabLineFill#%999Xclose'
+  " endif
+  return s
+endfunction
+```
