@@ -222,14 +222,15 @@ VIM
 ===
 * First, there is the `rg` command (ripgrep) that should be nicer and faster than `git grep`
 * I use ctags with vim
-* For grepping withing vim, I use the plugin `grep.vim`: https://www.vim.org/scripts/script.php?script_id=311
-Usage example:
+In .vim/plugin/ctags.vim, I set the statusline to '%<%F...blabla' instead of '%<%f...blabla' to get the full path of the file and not
+just the name. NOTE that the statusline is set in two places.
+
+to use 'git grep' for `:grep` I do:
 ```
-:Rg height ~/git/media_tree
+set grepprg=git\ grep -n\ $*
 ```
-* Then to navigate between the windows, it is CTRL+w and then the j,k keys. To go to previous place: CTRL+o, and forthplace CTRL+i
-* To show tab numbers, I copy-past this https://stackoverflow.com/a/33765365/1019140 to .vimrc
-* to ident a peace of code: select the code and press '='
+then `:copen` and `:ccl` open and close the quickfix buffer
+
 
 My current `.vimrc`:
 ```
@@ -340,4 +341,16 @@ function! MyTabLine()
   " endif
   return s
 endfunction
+```
+
+
+BYOBU
+=====
+to change taggles between split regions similar to vim (but with Ctrl)
+in the file ~/.byobu/keybindings.tmux:
+```
+bind-key -n C-l display-panes \; select-pane -R
+bind-key -n C-h display-panes \; select-pane -L
+bind-key -n C-k display-panes \; select-pane -U
+bind-key -n C-j display-panes \; select-pane -D
 ```
