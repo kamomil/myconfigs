@@ -231,6 +231,26 @@ set grepprg=git\ grep -n\ $*
 ```
 then `:copen` and `:ccl` open and close the quickfix buffer
 
+The better use for git grep is:
+
+```
+" from https://stackoverflow.com/questions/2415237/techniques-in-git-grep-and-vim#2415366
+func GitGrep(...)
+  let save = &grepprg
+  set grepprg=git\ grep\ -n\ $*
+  let s = 'grep'
+  for i in a:000
+    let s = s . ' ' . i
+  endfor
+  exe s
+  let &grepprg = save
+endfun
+command -nargs=? G call GitGrep(<f-args>)
+```
+Then `:G <search-text>` is the `git grep` cmd
+
+
+
 
 My current `.vimrc`:
 ```
@@ -354,3 +374,5 @@ bind-key -n C-h display-panes \; select-pane -L
 bind-key -n C-k display-panes \; select-pane -U
 bind-key -n C-j display-panes \; select-pane -D
 ```
+UPDATE: in the meanwhile I changed to `terminator` , it is also possible
+to set the keybinding there.
