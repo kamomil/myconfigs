@@ -218,6 +218,13 @@ To mark selected messages as read: m
 sieve-connect --noclearauth -s mail.collabora.co.uk -u <your collabora user name>
 ```
 
+
+thunderbird filters:
+===================
+you should have what is called "Mail Toolbar" if you don't have  it, right click on a tool bar
+to add it. The you have that 3 parallel horizontals lines symbol on the right side of that toolbar.
+Click it, in the menu open tools->Message filters
+
 VIM
 ===
 * First, there is the `rg` command (ripgrep) that should be nicer and faster than `git grep`
