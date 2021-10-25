@@ -383,3 +383,8 @@ bind-key -n C-j display-panes \; select-pane -D
 ```
 UPDATE: in the meanwhile I changed to `terminator` , it is also possible
 to set the keybinding there.
+
+To disable the activities opening with the "Super" key:
+```
+gsettings set org.gnome.mutter overlay-key ''
+```
