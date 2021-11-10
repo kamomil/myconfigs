@@ -1,0 +1,105 @@
+require [ "fileinto", "mailbox", "variables", "envelope", "subaddress", "duplicate" ];
+
+# useful source https://protonmail.com/support/knowledge-base/sieve-advanced-custom-filters/
+
+# If CRM114 thinks it's spam, put it in the Spam folder
+if header :matches "X-crm114-status" "SPAM*" {
+  fileinto :create "Spam";
+  stop;
+}
+
+if duplicate {
+  fileinto :create "Trash.uplicate";
+  stop;
+}
+
+if address :is ["to", "cc"] ["dafna.hirschfeld@collabora.com", "dafna3@gmail.com"] {
+  if header :contains "Subject" "Patch notification:" {
+    fileinto :create "patch-notification";
+    stop;
+  }
+}
+
+if address :is ["to", "cc", "bcc"] ["dafna.hirschfeld@collabora.com", "dafna3@gmail.com"] {
+  if header :contains "Subject" ["PATCH", "RFC"] {
+    fileinto :create "Inbox.media-to-me";
+    stop;
+  }
+}
+
+if address :is "from" "noreply@phabricator.collabora.com" {
+   fileinto :create "Inbox.Maniphest";
+   stop;
+}
+
+
+#chromeos weekly reports
+if header :matches "List-Id" "*<chromeos-upstream-collabora.googlegroups.com>" {
+	if header :contains "Subject" ["report week"] {
+		fileinto "Collabora.reports";
+		stop;
+	}
+}
+
+
+# Collabora internal mailing lists
+if header :matches "List-Id" "*<*.lists.collabora.co.uk>" {
+  if header :contains "Subject" ["Weekly DevOps", "KernelCI triweekly report", "KernelCI biweekly report", "Delivery Weekly Summary", "Bi-weekly report", "Marketing monthly report", "2h/week summary", "Bi-weekly Panfrost summary"] {
+    fileinto "Collabora.reports";
+    stop;
+  } elsif header :contains "Subject" ["maintenance", "Maintenance"] {
+    fileinto :create "Collabora.maintenance";
+    stop;
+  }
+  fileinto :create "Collabora.${2}";
+  stop;
+}
+
+# git pull requests in media mailing list
+if header :matches "List-Id" "*<linux-media.vger.kernel.org>" {
+  if header :contains "Subject" "GIT PULL" {
+    fileinto :create "media-pull";
+    stop;
+  }
+}
+
+# vger.kernel.org mailing lists
+if header :matches "List-Id" "*<*.vger.kernel.org>" {
+  fileinto :create "kernel.${2}";
+}
+
+# tpm mailing lists
+if header :matches "List-Id" "*<*.lists.01.org>" {
+	fileinto :create "tpm2";
+}
+
+# infradead mailing lists
+if header :matches "List-Id" "*<*.lists.infradead.org>" {
+	fileinto :create "kernel.${2}";
+}
+
+# dri-devel
+if header :matches "List-Id" "*<dri-devel.lists.freedesktop.org>" {
+  fileinto :create "kernel.dri-devel";
+}
+
+# libcamera-devel
+if header :matches "List-Id" "*<libcamera-devel.lists.libcamera.org>" {
+  fileinto :create "libcamera";
+}
+
+# alsa mailing lists
+if header :matches "List-Id" "*<alsa-devel.alsa-project.org>" {
+	fileinto :create "kernel.alsa";
+}
+
+# cros dev mailing lists
+if header :matches "List-Id" "*<chromium-os-dev.chromium.org>" {
+	fileinto :create "cros-dev";
+}
+
+# iommu mailing list
+if header :matches "List-Id" "*<iommu.lists.linux-foundation.org>" {
+	fileinto :create "kernel.iommu";
+}
+
