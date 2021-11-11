@@ -48,10 +48,12 @@ if header :matches "List-Id" "*<chromeos-upstream-collabora.googlegroups.com>" {
 
 
 # Collabora internal mailing lists
-if header :matches "List-Id" "*<*.lists.collabora.co.uk>" {
-  if header :contains "Subject" ["Weekly DevOps", "KernelCI triweekly report", "KernelCI biweekly report", "Delivery Weekly Summary", "Bi-weekly report", "Marketing monthly report", "2h/week summary", "Bi-weekly Panfrost summary"] {
-    fileinto "Collabora.reports";
-    stop;
+if anyof (header :matches "List-Id" "*<*.lists.collabora.co.uk>", address :contains ["from", "to"] "@collabora.com") {
+  if header :contains "Subject" ["report", "summary"] {
+    if header :contains "Subject" ["weekly", "monthly", "2h/week"] {
+      fileinto "Collabora.reports";
+      stop;
+    }
   } elsif header :contains "Subject" ["maintenance", "Maintenance"] {
     fileinto :create "Collabora.maintenance";
     stop;
@@ -106,9 +108,3 @@ if header :matches "List-Id" "*<chromium-os-dev.chromium.org>" {
 if header :matches "List-Id" "*<iommu.lists.linux-foundation.org>" {
 	fileinto :create "kernel.iommu";
 }
-
-if header :regex "Subject" [".*Collabora.*report.*", ".*KernelCI.*report.*"] {
-    fileinto "Collabora.reports";
-    stop;
-}
-
