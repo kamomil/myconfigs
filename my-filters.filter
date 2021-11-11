@@ -46,8 +46,7 @@ if header :matches "List-Id" "*<chromeos-upstream-collabora.googlegroups.com>" {
 	}
 }
 
-
-# Collabora internal mailing lists
+# filter away all collabora's reports/maintenance mails
 if anyof (header :matches "List-Id" "*<*.lists.collabora.co.uk>", address :contains ["from", "to"] "@collabora.com") {
   if header :contains "Subject" ["report", "summary"] {
     if header :contains "Subject" ["weekly", "monthly", "2h/week"] {
@@ -58,9 +57,14 @@ if anyof (header :matches "List-Id" "*<*.lists.collabora.co.uk>", address :conta
     fileinto :create "Collabora.maintenance";
     stop;
   }
+}
+
+# Collabora internal mailing lists
+if header :matches "List-Id" "*<*.lists.collabora.co.uk>" {
   fileinto :create "Collabora.${2}";
   stop;
 }
+
 # git pull requests in media mailing list
 if header :matches "List-Id" "*<linux-media.vger.kernel.org>" {
   if header :contains "Subject" "GIT PULL" {
