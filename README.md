@@ -388,3 +388,37 @@ To disable the activities opening with the "Super" key:
 ```
 gsettings set org.gnome.mutter overlay-key ''
 ```
+
+ALIASES
+=======
+aliases are very useful, here are my git aliases:
+```
+
+[alias]
+# 'log hs' to show nice online commit info
+hs = log --pretty='%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s'
+# 'log l'  to show online log
+l = log --oneline
+l8 = log --oneline -8
+l28 = log --oneline -28
+
+# will do 'git log --oneline -n <N>'
+lon = "!git log --oneline -n ${2}"
+
+# git sh 5 == 'git show HEAD~5'
+sh = !sh -c 'git show HEAD~$1' -
+
+# git r 5 == git rebase -i HEAD~5
+r = !sh -c 'git rebase -i HEAD~$1' -
+```
+my bash aliases:
+```
+
+alias ll='ls -l'
+alias l='ls -trl'
+
+# this will show git log --oneline with commit numbers
+#it is useful to know the distance of the commit from HEAD
+alias lon='f(){ git lon $1 | nl -v 0;  unset -f f; }; f'
+```
+
